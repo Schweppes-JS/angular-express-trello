@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Error } from "mongoose";
 import jwt from "jsonwebtoken";
 
+import { IExpressRequest } from "src/types/expressRequest.interface";
 import { UserDocument } from "src/types/user.interface";
 import UserModel from "../models/user";
 import { secret } from "../config";
@@ -44,4 +45,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
     next(err);
   }
+};
+
+export const currentUser = async (req: IExpressRequest, res: Response, next: NextFunction) => {
+  if (req.user) res.send(normilizeUser(req.user));
+  else res.sendStatus(401);
 };
